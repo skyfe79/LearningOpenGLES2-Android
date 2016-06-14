@@ -1,4 +1,4 @@
-package kr.pe.burt.android.star;
+package kr.pe.burt.android.star.glkit;
 
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -558,7 +558,7 @@ public class ShaderProgram {
         GLES20.glVertexAttribPointer(location, size, type, normalize, stride, buffer);
     }
 
-    /** Sets the vertex attribute with the given name. 
+    /** Sets the vertex attribute with the given name.
      *
      * @param name the attribute name
      * @param size the number of components, must be >= 1 and <= 4

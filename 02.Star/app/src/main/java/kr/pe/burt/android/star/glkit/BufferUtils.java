@@ -1,4 +1,4 @@
-package kr.pe.burt.android.star;
+package kr.pe.burt.android.star.glkit;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
