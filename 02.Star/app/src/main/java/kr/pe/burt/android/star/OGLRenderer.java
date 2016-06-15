@@ -4,6 +4,8 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import java.nio.Buffer;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -19,31 +21,32 @@ import kr.pe.burt.android.star.glkit.ShaderUtils;
  */
 public class OGLRenderer implements GLSurfaceView.Renderer {
 
-    ShaderProgram shader;
-    Context context;
-    int vertexBuffer = -1;
+    private Context context;
+    private ShaderProgram shader;
+    private FloatBuffer vertexBuffer;
+    private int vertexBufferId;
 
     //we should convert vertices to FloatBuffer!
-    Vertex [] vertices = new Vertex[] {
-        new Vertex( 0.37f, -0.12f, 0.0f),
-        new Vertex( 0.95f,  0.30f, 0.0f),
-        new Vertex( 0.23f,  0.30f, 0.0f),
+    float [] vertices = new float[] {
+             0.37f, -0.12f, 0.0f,
+             0.95f,  0.30f, 0.0f,
+             0.23f,  0.30f, 0.0f,
 
-        new Vertex( 0.23f,  0.30f, 0.0f),
-        new Vertex( 0.00f,  0.90f, 0.0f),
-        new Vertex(-0.23f,  0.30f, 0.0f),
+             0.23f,  0.30f, 0.0f,
+             0.00f,  0.90f, 0.0f,
+            -0.23f,  0.30f, 0.0f,
 
-        new Vertex(-0.23f,  0.30f, 0.0f),
-        new Vertex(-0.95f,  0.30f, 0.0f),
-        new Vertex(-0.37f, -0.12f, 0.0f),
+            -0.23f,  0.30f, 0.0f,
+            -0.95f,  0.30f, 0.0f,
+            -0.37f, -0.12f, 0.0f,
 
-        new Vertex(-0.37f, -0.12f, 0.0f),
-        new Vertex(-0.57f, -0.81f, 0.0f),
-        new Vertex( 0.00f, -0.40f, 0.0f),
+            -0.37f, -0.12f, 0.0f,
+            -0.57f, -0.81f, 0.0f,
+             0.00f, -0.40f, 0.0f,
 
-        new Vertex( 0.00f, -0.40f, 0.0f),
-        new Vertex( 0.57f, -0.81f, 0.0f),
-        new Vertex( 0.37f, -0.12f, 0.0f),
+             0.00f, -0.40f, 0.0f,
+             0.57f, -0.81f, 0.0f,
+             0.37f, -0.12f, 0.0f,
     };
 
     public OGLRenderer(Context context) {
@@ -55,21 +58,34 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         setupShader();
         setupVertexBuffer();
-
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl10, int i, int i1) {
-
+    public void onSurfaceChanged(GL10 gl10, int w, int h) {
+        GLES20.glViewport(0, 0, w, h);
     }
 
     @Override
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+
+        shader.begin();
+
+        shader.enableVertexAttribute("a_Position");
+        shader.setVertexAttribute("a_Position", 3, GLES20.GL_FLOAT, false, 3*4, 0);
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length);
+
+        shader.disableVertexAttribute("a_Position");
+
+        shader.end();
     }
 
     private void setupShader() {
+        // compile & link shader
         shader = new ShaderProgram(
                 ShaderUtils.readShaderFileFromRawResource(context, R.raw.simple_vertex_shader),
                 ShaderUtils.readShaderFileFromRawResource(context, R.raw.simple_fragment_shader)
@@ -77,11 +93,18 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private void setupVertexBuffer() {
-        IntBuffer vb = BufferUtils.newIntBuffer(1);
-        GLES20.glGenBuffers(1, vb);
-        vertexBuffer = vb.get(0);
 
-        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBuffer);
-        //GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, );
+        //store vertices vertexBuffer
+        vertexBuffer = BufferUtils.newFloatBuffer(vertices.length);
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
+
+        //copy vertices from cpu to the gpu
+        IntBuffer buffer = IntBuffer.allocate(1);
+        GLES20.glGenBuffers(1, buffer);
+        vertexBufferId = buffer.get(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, vertexBufferId);
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, vertices.length * 4, vertexBuffer, GLES20.GL_STATIC_DRAW);
+
     }
 }

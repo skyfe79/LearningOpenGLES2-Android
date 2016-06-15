@@ -46,17 +46,7 @@ public class ShaderProgram {
 
     // is this valid shader program?
     public boolean isValid() {
-        return true;
-    }
-
-    // is this initialized shader program?
-    public boolean isInitialized() {
-        return true;
-    }
-
-    // prepare the shader program
-    public boolean prepare() {
-        return true;
+        return isCompiled;
     }
 
     // start to use shader program
@@ -108,14 +98,12 @@ public class ShaderProgram {
         GLES20.glAttachShader(program, fragmentShaderHandle);
         GLES20.glLinkProgram(program);
 
-        IntBuffer intbuf = BufferUtils.newIntBuffer(1);
-
-        GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, intbuf);
-        int linked = intbuf.get(0);
-        if(linked == 0) {
+        int[] linked = new int[1];
+        GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, linked, 0);
+        if(linked[0] == GLES20.GL_FALSE) {
             String infoLog = GLES20.glGetProgramInfoLog(program);
             log += infoLog;
-
+            GLES20.glDeleteProgram(program);
             return  -1;
         }
         return program;
@@ -126,17 +114,16 @@ public class ShaderProgram {
         if(shader == 0)
             return -1;
 
-        GLES20.glShaderSource(shaderType, shaderCode);
+        GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
 
-        IntBuffer intbuf = BufferUtils.newIntBuffer(1);
-        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, intbuf);
+        int[] compiled = new int[1];
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
 
-        int compiled = intbuf.get(0);
-        if(compiled == 0) {
+        if(compiled[0] == GLES20.GL_FALSE) {
             String infoLog = GLES20.glGetShaderInfoLog(shader);
             log += infoLog;
-
+            GLES20.glDeleteShader(shader);
             return -1;
         }
         return shader;
@@ -183,8 +170,8 @@ public class ShaderProgram {
 
         attributes.clear();
 
-        IntBuffer params = BufferUtils.newIntBuffer(1);
-        IntBuffer type = BufferUtils.newIntBuffer(1);
+        IntBuffer params = IntBuffer.allocate(1);
+        IntBuffer type = IntBuffer.allocate(1);
         GLES20.glGetProgramiv(programHandle, GLES20.GL_ACTIVE_ATTRIBUTES, params);
         int numAttributes = params.get(0);
 
@@ -202,8 +189,8 @@ public class ShaderProgram {
 
         uniforms.clear();
 
-        IntBuffer params = BufferUtils.newIntBuffer(1);
-        IntBuffer type = BufferUtils.newIntBuffer(1);
+        IntBuffer params = IntBuffer.allocate(1);
+        IntBuffer type = IntBuffer.allocate(1);
         GLES20.glGetProgramiv(programHandle, GLES20.GL_ACTIVE_UNIFORMS, params);
         int numUniform = params.get(0);
 
@@ -569,7 +556,8 @@ public class ShaderProgram {
      * @param offset byte offset into the vertex buffer object bound to GL20.GL_ARRAY_BUFFER. */
     public void setVertexAttribute (String name, int size, int type, boolean normalize, int stride, int offset) {
         int location = fetchAttributeLocation(name);
-        if (location == -1) return;
+        if (location == -1)
+            return;
         GLES20.glVertexAttribPointer(location, size, type, normalize, stride, offset);
     }
 
