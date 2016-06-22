@@ -36,6 +36,9 @@ Learning OpenGLES 2 for Android is written in Java language. There is an OpenGL 
 
 ![](04.VertexArrayObject/result.png)
 
+## Model
+
+![](05.Model/result.png)
 
 
 ## Ray Wenderlich License
