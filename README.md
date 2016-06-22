@@ -30,6 +30,14 @@ Learning OpenGLES 2 for Android is written in Java language. There is an OpenGL 
 
 ![](03.ColoredIndexSquare/result.png)
 
+## VertexArrayObject(VAO)
+
+`NOTE:` You must run this vao example on the real android device because android emulater supports only OpenGL ES 2.0. It's minimum sdk level is 21 because auto setting of EGL for OpenGL 3.0.
+
+![](04.VertexArrayObject/result.png)
+
+
+
 ## Ray Wenderlich License
 
 The Ray Wenderlich License

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "kr.pe.burt.android.vertexarrayobject"
-        minSdkVersion 18      // for OpenGL ES 3
+        minSdkVersion 21      // for OpenGL ES 3 and auto setting of GLSurfaceView
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"

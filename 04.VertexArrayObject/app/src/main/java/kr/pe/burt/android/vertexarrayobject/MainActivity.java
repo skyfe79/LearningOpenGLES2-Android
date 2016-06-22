@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
         String versionText = "Device Supported OpenGL ES Version = " + configurationInfo.getGlEsVersion();
         Toast.makeText(this, versionText, Toast.LENGTH_LONG).show();
-        Log.d("TAGTAG", versionText);
+        Log.d("MainActivity", versionText);
     }
 
     @Override
