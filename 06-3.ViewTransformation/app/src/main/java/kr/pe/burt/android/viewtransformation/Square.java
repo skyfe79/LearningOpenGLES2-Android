@@ -13,7 +13,7 @@ import kr.pe.burt.android.viewtransformation.glkit.ShaderProgram;
  */
 public class Square extends Model {
 
-    private static final float ONE_SEC = 1000.0f; // 1 second
+
 
 
     static final float squareCoords[] = {
@@ -32,21 +32,5 @@ public class Square extends Model {
         super("square", shader, squareCoords, indices);
     }
 
-    @Override
-    public void updateWithDelta(long dt) {
-        final float secsPerMove = 2.0f * ONE_SEC;
-        float movement = (float)(Math.sin(System.currentTimeMillis() * 2 * Math.PI / secsPerMove));
 
-        Matrix4f camera = new Matrix4f();
-        camera.translate(0.0f, -1.0f * movement, 0.0f);
-        camera.rotate(360.0f * movement, 0.0f, 0.0f, 1.0f);
-        camera.scale(movement, movement, movement);
-        setCamera(camera);
-
-        setPosition(new Float3(
-                position.x,
-                position.y,
-                position.z)
-        );
-    }
 }
