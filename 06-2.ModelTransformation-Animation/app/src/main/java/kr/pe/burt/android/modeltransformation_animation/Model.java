@@ -108,12 +108,7 @@ public class Model {
         return mat;
     }
 
-    public void updateWithDelta(long dt) {
-    }
-
     public void draw(long dt) {
-
-        updateWithDelta(dt);
 
         shader.begin();
 

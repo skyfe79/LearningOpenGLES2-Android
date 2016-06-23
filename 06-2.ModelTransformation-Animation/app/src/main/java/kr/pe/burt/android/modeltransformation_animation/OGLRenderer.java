@@ -17,6 +17,8 @@ import kr.pe.burt.android.modeltransformation_animation.glkit.ShaderUtils;
  */
 public class OGLRenderer implements GLSurfaceView.Renderer {
 
+    private static final float ONE_SEC = 1000.0f; // 1 second
+
     private Context context;
     private Square square;
     private long lastTimeMillis = 0L;
@@ -48,8 +50,19 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
         long currentTimeMillis = System.currentTimeMillis();
-        square.draw(currentTimeMillis - lastTimeMillis);
+        updateWithDelta(currentTimeMillis - lastTimeMillis);
         lastTimeMillis = currentTimeMillis;
     }
 
+    public void updateWithDelta(long dt) {
+
+        final float secsPerMove = 2.0f * ONE_SEC;
+        square.setPosition(new Float3(
+                (float)(Math.sin(System.currentTimeMillis() * 2 * Math.PI / secsPerMove)),
+                square.position.y,
+                square.position.z)
+        );
+
+        square.draw(dt);
+    }
 }
