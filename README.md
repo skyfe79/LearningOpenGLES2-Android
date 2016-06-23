@@ -60,6 +60,10 @@ Learning OpenGLES 2 for Android is written in Java language. There is an OpenGL 
 
 ![](06-5.AnimateCube/result.gif)
 
+## Depth & Culling
+
+![](06-6.DepthAndCulling/result.gif)
+
 ## Ray Wenderlich License
 
 The Ray Wenderlich License
