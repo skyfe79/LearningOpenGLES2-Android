@@ -131,9 +131,9 @@ public class Model {
 
         shader.begin();
 
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureName);
-        shader.setUniformi("u_Texture", 1);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);                 // 1번 텍스처 슬롯을 activate 한다.
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureName);    // 1번 텍스처 슬롯에 생성한 텍스처를 바인딩한다.
+        shader.setUniformi("u_Texture", 1);                         // 유니폼 u_Texture에는 activate한 텍스처슬롯번호를 알려준다.
 
         camera.multiply(modelMatrix());
         shader.setUniformMatrix("u_ProjectionMatrix", projection);
