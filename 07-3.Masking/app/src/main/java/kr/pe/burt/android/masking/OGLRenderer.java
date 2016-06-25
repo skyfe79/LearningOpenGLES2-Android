@@ -40,18 +40,17 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
                 ShaderUtils.readShaderFileFromRawResource(context, R.raw.simple_fragment_shader)
         );
 
-        int frameTexture = TextureUtils.loadTexture(context, R.drawable.picture_frame);
-
         int zombieTexture = TextureUtils.loadTexture(context, R.drawable.picture);
+        int frameTexture = TextureUtils.loadTexture(context, R.drawable.picture_frame);
         int maskTexture = TextureUtils.loadTexture(context, R.drawable.picture_frame_mask);
 
         zombie = new MaskedSquare(shader);
         frame  = new MaskedSquare(shader);
 
-        frame.setPosition(new Float3(0.0f, 0.0f, 0.0f));
-
+        frame.setPosition(new Float3(0.0f, 0.0f, 0.1f));
+        zombie.setPosition(new Float3(0.0f, 0.0f, 0.0f));
         zombie.setTexture(zombieTexture);
-        //zombie.setMask(maskTexture);
+        zombie.setMask(maskTexture);
         frame.setTexture(frameTexture);
 
         lastTimeMillis = System.currentTimeMillis();
@@ -71,8 +70,6 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
         if(frame != null) {
             frame.setProjection(perspective);
         }
-
-
     }
 
     /**
@@ -102,6 +99,10 @@ public class OGLRenderer implements GLSurfaceView.Renderer {
         frame.setCamera(camera);
 
         zombie.draw(dt);
+
+        final float secsPerMove = 2.0f * ONE_SEC;
+        float movement = (float) (Math.sin(System.currentTimeMillis() * 2 * Math.PI / secsPerMove));
+        frame.setPosition(new Float3(movement, frame.position.y, frame.position.z));
         frame.draw(dt);
     }
 

@@ -23,14 +23,6 @@ public class MaskedSquare extends Model {
 
 
     public MaskedSquare(ShaderProgram shader) {
-        super("MaskedSquare", shader, new float[] {
-                1.0f, -1.0f, 0f,   1f, 0f,
-                1.0f,  1.0f, 0f,   1f, 1f,
-                -1.0f,  1.0f, 0f,   0f, 1f,
-                -1.0f, -1.0f, 0f,   0f, 0f
-        }, new short[] {
-                0, 1, 2,
-                2, 3, 0
-        });
+        super("MaskedSquare", shader, vertices, indices);
     }
 }
