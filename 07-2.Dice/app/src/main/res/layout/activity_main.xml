@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="kr.pe.burt.android.dice.MainActivity">
+
+    <kr.pe.burt.android.dice.OGLView
+        android:id="@+id/oglView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
