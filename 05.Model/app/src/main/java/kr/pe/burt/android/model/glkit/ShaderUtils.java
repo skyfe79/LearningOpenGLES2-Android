@@ -47,6 +47,7 @@ public class ShaderUtils {
             InputStream ims = assetManager.open(filePath);
 
             String re = convertStreamToString(ims);
+            return re;
         }
         catch (Exception e)
         {
