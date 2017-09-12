@@ -178,6 +178,7 @@ public class ShaderProgram {
         for(int i=0; i<numAttributes; i++) {
             params.compact();
             params.put(0, 1);
+            params.position(0);
             type.clear();
             String name = GLES20.glGetActiveAttrib(programHandle, i, params, type);
             int location = GLES20.glGetAttribLocation(programHandle, name);
